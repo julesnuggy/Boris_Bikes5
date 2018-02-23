@@ -1,5 +1,5 @@
 class DockingStation
-  attr_reader :bikes_in_station, :capacity
+  attr_accessor :bikes_in_station, :capacity
 
   DEFAULT_CAPACITY = 20
 
@@ -32,6 +32,7 @@ class DockingStation
       empty_spaces.push(index) if val == nil
     }
     p "Empty spaces found at #{empty_spaces}"
+    empty_spaces
   end
 
   def view_working
@@ -117,11 +118,18 @@ class Van
       @van_store.push(released_bike)
     }
 
-    p "Collected broken bikes: #{@van_store}"
+    p "Van has collected broken bikes: #{@van_store}"
     @van_store
   end
 
-  def return_bikes()
+  puts ""
+  def return_bikes(station)
+    empty_spaces = station.view_spaces #Array of indices
+    @van_store.each { |bike|
+      station.bikes_in_station.insert(empty_spaces.shift, bike)
+
+      p "Van has returned bike #{bike} to the docking station"
+    }
   end
 
 end
@@ -142,7 +150,8 @@ class Garage
     # Clear van_store array as van is now empty
     van.van_store.clear
 
-    p "Received broken bikes: #{garage_store}"
+    puts ""
+    p "Garage has received broken bikes: #{@garage_store}"
   end
 
   def fix(bikes)
@@ -151,25 +160,34 @@ class Garage
         bike.working = true
       }
     else
-      
+
     end
-    p "Fixed bikes: #{garage_store}"
+
+    puts ""
+    p "Garage has fixed bikes: #{@garage_store}"
   end
 
   def return_bikes(van)
+    puts ""
+    p "Van originally contains #{van.van_store}"
+    p "Garage originally contains #{@garage_store}"
+
     # Loop through each |bike| element in garage
-    @garage_store.each { |bike|
+    @garage_store.each_with_index { |bike, index|
       # If bike is fixed (i.e. working) then
       if bike.working == true
         # push bike to van
         van.van_store.push(bike)
         # and remove from garage
-        @garage_store.delete(bike)
       end
     }
-    p "Returned broken bikes: #{van.van_store}"
-    p "Van now contains: #{van.van_store}"
-    p "Garage now contains: #{garage_store}"
+
+    # and remove from garage
+    @garage_store.delete_if { |bike| bike.working == true }
+
+    puts ""
+    p "Van now contains these working bikes: #{van.van_store}"
+    p "Garage now contains these broken bikes: #{garage_store}"
 
   end
 

@@ -15,13 +15,11 @@ describe Garage do
     garage.receive_bikes(van)
 
     expect(van.van_store.empty?).to be_truthy
-    expect(garage_store).to include(bike1, bike2)
+    expect(garage.garage_store).to include(bike1, bike2)
   end
 
   it "returns fixed bikes to van" do
     bike1 = bike2 = Bike.new
-    bike1.report
-    bike2.report
     bike1.release
     bike2.release
 
@@ -31,7 +29,6 @@ describe Garage do
 
     garage.return_bikes(van)
 
-    expect(garage_store.empty?).to be_truthy
-    expect(van_store).to include(bike1, bike2)
+    expect(van.van_store).to include(bike1, bike2)
   end
 end

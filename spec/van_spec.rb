@@ -21,7 +21,7 @@ describe Van do
       van = Van.new
       van.collect_bikes(station)
       # Empty spaces where the bikes where originally docked
-      expect(station.view_spaces).to include("1", "2")
+      expect(station.view_spaces).to include(1, 2)
       # No broken bikes in docking station
       expect(station.view_broken.empty?).to be_truthy
     end
@@ -40,8 +40,24 @@ describe Van do
     end
   end
 
-  # describe "vans deliver broken bikes to garages" do
-  #   it "" do
-  #   end
-  # end
+   describe "return_bikes" do
+     it "returns fixed bikes from van to docking station" do
+       # Create docking station with 2 empty spaces at index 0 and 1
+       station = DockingStation.new
+       station.bikes_in_station[0] = station.bikes_in_station[1] = nil
+
+       # Create 2 undocked bikes and push onto van
+       bike1 = bike2 = Bike.new
+       bike1.release
+       bike2.release
+       van = Van.new
+       van.van_store.push(bike1, bike2)
+
+       # Return bikes to station
+       van.return_bikes(station)
+
+       expect(station.bikes_in_station).to include(bike1,bike2)
+     end
+   end
+
 end
