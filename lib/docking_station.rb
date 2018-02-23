@@ -3,10 +3,13 @@ class DockingStation
 
   DEFAULT_CAPACITY = 20
 
-  def initialize(capacity = DEFAULT_CAPACITY)
+  def initialize(bike_class, capacity = DEFAULT_CAPACITY)
     @bikes_in_station = []
     @capacity = capacity
-    @capacity.times{@bikes_in_station << Bike.new}
+    @capacity.times {
+      @bike = bike_class.new
+      @bikes_in_station << @bike
+    }
   end
 
   def release_bike(idx)

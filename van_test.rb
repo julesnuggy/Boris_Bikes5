@@ -1,6 +1,6 @@
 require "./lib/docking_station.rb"
 
-station = DockingStation.new
+station = DockingStation.new(Bike)
 bike1 = station.release_bike(0)
 bike2 = station.release_bike(1)
 

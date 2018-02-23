@@ -11,7 +11,7 @@ describe Van do
 #      allow(bike2).to receive(:report).and_return(false)
 #      allow(station).to receive(:dock).and_return(["bike_ID_1", @dock_status=true, @working=false])
 #      allow(station).to receive(:dock).and_return(["bike_ID_2", @dock_status=true, @working=false])
-      station = DockingStation.new
+      station = DockingStation.new(Bike)
       bike1 = station.release_bike(1)
       bike2 = station.release_bike(2)
       bike1.report
@@ -27,7 +27,7 @@ describe Van do
     end
 
     it "confirms there are broken bikes in van" do
-      station = DockingStation.new
+      station = DockingStation.new(Bike)
       bike1 = station.release_bike(1)
       bike2 = station.release_bike(2)
       bike1.report
@@ -43,7 +43,7 @@ describe Van do
    describe "return_bikes" do
      it "returns fixed bikes from van to docking station" do
        # Create docking station with 2 empty spaces at index 0 and 1
-       station = DockingStation.new
+       station = DockingStation.new(Bike)
        station.bikes_in_station[0] = station.bikes_in_station[1] = nil
 
        # Create 2 undocked bikes and push onto van
